@@ -1,0 +1,36 @@
+name: Windows Build
+
+on:
+#  push:
+#    branches: [ "main" ]
+#  pull_request:
+#    branches: [ "main" ]
+  schedule:
+    - cron: '0 0 * * *'
+
+jobs:
+  build:
+
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Install dependencies
+      run: |
+        choco install mingw -y
+        choco install make -y
+        
+   # - run: autoreconf -fi
+   #   name: 'autoreconf'
+
+   # - run: ./configure --enable-warnings --enable-werror
+   #   name: 'configure'
+      
+    - name: Make
+      run: make
+
+    #- name: Run check
+     # run: make check
+
+    #- name: Run distcheck
+     # run: make distcheck

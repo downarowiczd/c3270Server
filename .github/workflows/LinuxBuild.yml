@@ -1,0 +1,35 @@
+name: Linux Build
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Install dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install libtool autoconf automake pkg-config stunnel4 libpsl-dev libbrotli-dev libzstd-dev
+        sudo python3 -m pip install impacket
+        
+    - run: autoreconf -fi
+      name: 'autoreconf'
+
+    - run: ./configure --enable-warnings --enable-werror
+      name: 'configure'
+      
+    - name: Make
+      run: make
+
+    #- name: Run check
+     # run: make check
+
+    #- name: Run distcheck
+     # run: make distcheck
